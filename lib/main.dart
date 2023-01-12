@@ -11,7 +11,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       scrollBehavior: MyCustomScrollBehavior(),
       home: HomeScreen(),
