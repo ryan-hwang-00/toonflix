@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 import 'package:toonflix/services/api_service.dart';
+import 'package:toonflix/widgets/webtoon_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -9,7 +10,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -25,26 +25,25 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: FutureBuilder(
-          future: webtoons,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  const SizedBox(
-                    height: 200,
-                  ),
-                  Expanded(child: makeList(snapshot)),
-                ],
-              );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
+      body: FutureBuilder(
+        future: webtoons,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Column(
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(
+                  child: makeList(snapshot),
+                ),
+              ],
             );
-          },
-        ),
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
       ),
     );
   }
@@ -53,11 +52,19 @@ class HomeScreen extends StatelessWidget {
     return ListView.separated(
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length,
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20,
+      ),
       itemBuilder: (context, index) {
         var webtoon = snapshot.data![index];
-        return Text(webtoon.title);
+        return Webtoon(
+          title: webtoon.title,
+          thumb: webtoon.thumb,
+          id: webtoon.id,
+        );
       },
-      separatorBuilder: (context, index) => const SizedBox(width: 20),
+      separatorBuilder: (context, index) => const SizedBox(width: 40),
     );
   }
 }
